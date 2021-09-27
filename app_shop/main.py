@@ -7,44 +7,46 @@ from .crud import crud
 from .models import models
 from .schemas import schemas
 from .database.database import SessionLocal, engine
+from .dependcies.dependency import get_db
 
+from app_shop.routers import customers
 models.Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()
 
-
+app.include_router(customers.customers_route)
 # Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# def get_db():
+#     db = SessionLocal()
+#     try:
+#         yield db
+#     finally:
+#         db.close()
 
 
-############################################################## Покупатели
-# Создание нового
-@app.post("/customers/", response_model=schemas.Customer)
-def create_customer(customer: schemas.CustomerCreate, db: Session = Depends(get_db)):
-    db_customer = crud.get_customer_by_email(db, email=customer.email)
-    if db_customer:
-        raise HTTPException(status_code=400, detail="Email уже зарегестрирован")
-    return crud.create_customer(db=db, customer=customer)
+# ############################################################## Покупатели
+# # Создание нового
+# @app.post("/customers/", response_model=schemas.Customer)
+# def create_customer(customer: schemas.CustomerCreate, db: Session = Depends(get_db)):
+#     db_customer = crud.get_customer_by_email(db, email=customer.email)
+#     if db_customer:
+#         raise HTTPException(status_code=400, detail="Email уже зарегестрирован")
+#     return crud.create_customer(db=db, customer=customer)
 
-# Посмотр лимитированного списка 
-@app.get("/customers/", response_model=List[schemas.Customer])
-def read_customers(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    customers = crud.get_customers(db, skip=skip, limit=limit)
-    return customers
+# # Посмотр лимитированного списка 
+# @app.get("/customers/", response_model=List[schemas.Customer])
+# def read_customers(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+#     customers = crud.get_customers(db, skip=skip, limit=limit)
+#     return customers
 
-# Поиск по ID
-@app.get("/customers/{customer_id}", response_model=schemas.Customer )
-def read_customer(customer_id: int, db: Session = Depends(get_db)):
-    db_customer = crud.get_customer(db, customer_id=customer_id)
-    if db_customer is None:
-        raise HTTPException(status_code=404, detail="Такого покупателя нет!")
-    return db_customer
+# # Поиск по ID
+# @app.get("/customers/{customer_id}", response_model=schemas.Customer )
+# def read_customer(customer_id: int, db: Session = Depends(get_db)):
+#     db_customer = crud.get_customer(db, customer_id=customer_id)
+#     if db_customer is None:
+#         raise HTTPException(status_code=404, detail="Такого покупателя нет!")
+#     return db_customer
 
 ############################################################## Дата заказа
 # Создание нового заказа
