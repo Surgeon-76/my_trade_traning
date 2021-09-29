@@ -1,9 +1,19 @@
 from datetime import datetime
-from sqlalchemy import Column, ForeignKey, Integer, String, \
-    Numeric, DateTime, SmallInteger
+
+
+from sqlalchemy import (
+    Column, 
+    ForeignKey, 
+    Integer, 
+    String, 
+    Numeric, 
+    DateTime, 
+    SmallInteger)    
 from sqlalchemy.orm import relationship
 
+
 from app_shop.database.database import Base
+
 
 class Customer(Base):
     __tablename__ = 'customers'
