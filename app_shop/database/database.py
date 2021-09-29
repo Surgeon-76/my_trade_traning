@@ -3,8 +3,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 
-user_name_db = 'surglin'
-password_db = 'Nusha230399'
+user_name_db = 'name'
+password_db = 'password'
 db_name = 'my_shop_db'
 
 engine = create_engine(
