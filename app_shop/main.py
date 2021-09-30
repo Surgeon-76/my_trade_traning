@@ -6,10 +6,11 @@ from .models import models
 from .database.database import engine
 
 from app_shop.routers import (
-    customers, 
-    items, 
-    orderitems, 
-    orders)
+    customers,
+    items,
+    orderitems,
+    orders
+    )
 
 
 models.Base.metadata.create_all(bind=engine)
