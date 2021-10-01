@@ -1,5 +1,3 @@
-from typing import List
-
 from fastapi import FastAPI
 
 from .models import models
@@ -10,13 +8,14 @@ from app_shop.routers import (
     items,
     orderitems,
     orders
-    )
+)
 
 
 models.Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()
+
 
 app.include_router(customers.customers_route)
 app.include_router(orders.order_route)

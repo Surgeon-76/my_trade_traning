@@ -13,11 +13,13 @@ customers_route = APIRouter(
     tags=['Покупатели:']
 )
 
+
 # Покупатели
 # Создание нового
-
-@customers_route.post("/", summary=('Создать'), response_model=schemas.Customer)
-def create_customer(customer: schemas.CustomerCreate, db: Session = Depends(get_db)):
+@customers_route.post("/", summary=('Создать'),
+                      response_model=schemas.Customer)
+def create_customer(customer: schemas.CustomerCreate,
+                    db: Session = Depends(get_db)):
     db_customer = crud.get_customer_by_email(db, email=customer.email)
     if db_customer:
         raise HTTPException(
@@ -26,17 +28,17 @@ def create_customer(customer: schemas.CustomerCreate, db: Session = Depends(get_
 
 
 # Посмотр лимитированного списка
-
-@customers_route.get("/", summary=('Показать всех'), response_model=List[schemas.Customer])
-def read_customers(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+@customers_route.get("/", summary=('Показать всех'),
+                     response_model=List[schemas.Customer])
+def read_customers(skip: int = 0, limit: int = 100,
+                   db: Session = Depends(get_db)):
     customers = crud.get_customers(db, skip=skip, limit=limit)
     return customers
 
+
 # Поиск по ID
-# @app.get("/customers/{customer_id}", response_model=schemas.Customer )
-
-
-@customers_route.get("/{customer_id}", summary=('Поиск покупателя по ID'), response_model=schemas.Customer)
+@customers_route.get("/{customer_id}", summary=('Поиск покупателя по ID'),
+                     response_model=schemas.Customer)
 def read_customer(customer_id: int, db: Session = Depends(get_db)):
     db_customer = crud.get_customer(db, customer_id=customer_id)
     if db_customer is None:

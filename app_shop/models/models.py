@@ -1,16 +1,15 @@
 from datetime import datetime
 
-
 from sqlalchemy import (
-    Column, 
-    ForeignKey, 
-    Integer, 
-    String, 
-    Numeric, 
-    DateTime, 
-    SmallInteger)    
+    Column,
+    ForeignKey,
+    Integer,
+    String,
+    Numeric,
+    DateTime,
+    SmallInteger
+    )
 from sqlalchemy.orm import relationship
-
 
 from app_shop.database.database import Base
 
