@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 
-from .models import models
-from .database.database import engine
+from .database.database import Base, engine
 
 from app_shop.routers import (
     customers,
@@ -10,8 +9,7 @@ from app_shop.routers import (
     orders
 )
 
-
-models.Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()
