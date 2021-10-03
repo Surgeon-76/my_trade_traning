@@ -9,6 +9,7 @@ from app_shop.routers import (
     orders
 )
 
+
 Base.metadata.create_all(bind=engine)
 
 
