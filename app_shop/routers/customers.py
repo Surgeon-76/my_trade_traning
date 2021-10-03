@@ -44,3 +44,15 @@ def read_customer(customer_id: int, db: Session = Depends(get_db)):
     if db_customer is None:
         raise HTTPException(status_code=404, detail="Такого покупателя нет!")
     return db_customer
+
+
+# Редактирование покупателя
+@customers_route.put("/{customer_id}", summary=('Редактирование покупателя'),
+                     response_model=schemas.CustomerBase)
+def edit_customers(customer_id: int, first_name: str, db: Session = Depends(get_db)):
+    db_customer = crud.update_customer(db, customer_id=customer_id, first_name=first_name)
+    if db_customer is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Такого покупателя нет! Редактирование невозможно!")
+    return db_customer
