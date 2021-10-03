@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from .database.database import Base, engine
 from app_shop.routers import (
     customers,
