@@ -1,4 +1,3 @@
-from typing import Dict, List
 from sqlalchemy.orm import Session
 
 from app_shop.models import (
@@ -47,11 +46,15 @@ def create_customer(db: Session, customer: schemas.CustomerCreate):
 
 
 # Редактирование Покупателя
-def update_customer(db: Session, customer_id: int, customer: schemas.CustomerBase):
-    db.query(customer_model.Customer).filter(customer_model.Customer.id == customer_id).update(dict(customer), synchronize_session='fetch')
+def update_customer(db: Session,
+                    customer_id: int, customer: schemas.CustomerBase):
+    db.query(customer_model.Customer).filter(
+        customer_model.Customer.id == customer_id).update(
+            dict(customer), synchronize_session='fetch')
     db.commit()
-    # print(customer)
-    return db.query(customer_model.Customer).filter(customer_model.Customer.id == customer_id).first()
+    return db.query(customer_model.Customer).filter(
+        customer_model.Customer.id == customer_id).first()
+
 
 # Товар
 # Выводим список товаров в заказе
