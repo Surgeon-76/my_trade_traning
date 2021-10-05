@@ -13,16 +13,20 @@ order_route = APIRouter(
     tags=['Заказы:']
 )
 
+
 # Дата заказа
 # Создание нового заказа
-
-@order_route.post("/customers/{customer_id}", summary=('Создать заказ'), response_model=schemas.Order)
-def create_order_for_customaser(customer_id: int, order: schemas.OrderCreate, db: Session = Depends(get_db)):
+@order_route.post("/customers/{customer_id}", summary=('Создать заказ'),
+                  response_model=schemas.Order)
+def create_order_for_customaser(customer_id: int, order: schemas.OrderCreate,
+                                db: Session = Depends(get_db)):
     return crud.create_orders(db=db, order=order, customer_id=customer_id)
 
-# Просмотр даты заказа
 
-@order_route.get("/", summary=('Показать заказы'), response_model=List[schemas.Order])
-def read_orders(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+# Просмотр даты заказа
+@order_route.get("/", summary=('Показать заказы'),
+                 response_model=List[schemas.Order])
+def read_orders(skip: int = 0, limit: int = 100,
+                db: Session = Depends(get_db)):
     orders = crud.get_orders(db, skip=skip, limit=limit)
     return orders

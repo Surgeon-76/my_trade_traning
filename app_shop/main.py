@@ -1,19 +1,15 @@
-from typing import List
-
 from fastapi import FastAPI
 
-from .models import models
-from .database.database import engine
-
+from .database.database import Base, engine
 from app_shop.routers import (
-    customers, 
-    items, 
-    orderitems, 
-    orders)
+    customers,
+    items,
+    orderitems,
+    orders
+)
 
 
-models.Base.metadata.create_all(bind=engine)
-
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
