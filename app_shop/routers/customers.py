@@ -1,7 +1,11 @@
 from typing import List
 
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException
+)
 
 from app_shop.crud import crud
 from app_shop.schemas import schemas

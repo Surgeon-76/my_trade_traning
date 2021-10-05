@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from fastapi import HTTPException
 
 from app_shop.models import (
     customer_model,
@@ -48,9 +49,13 @@ def create_customer(db: Session, customer: schemas.CustomerCreate):
 # Редактирование Покупателя
 def update_customer(db: Session,
                     customer_id: int, customer: schemas.CustomerBase):
+    customer = {key: value for key, value in customer.dict().items() if value != 'string'}
+    if len(customer) < 1:
+        raise HTTPException(
+            status_code=400, detail="Должно быть изменено хоть одно из полей!!!")
     db.query(customer_model.Customer).filter(
         customer_model.Customer.id == customer_id).update(
-            dict(customer), synchronize_session='fetch')
+            customer, synchronize_session='fetch')
     db.commit()
     return db.query(customer_model.Customer).filter(
         customer_model.Customer.id == customer_id).first()
