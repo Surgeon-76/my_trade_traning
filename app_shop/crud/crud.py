@@ -51,7 +51,7 @@ def update_customer(db: Session,
                     customer_id: int, customer: schemas.CustomerBase):
     customer = {key: value for key, value in customer.dict().items()
                 if value != 'string'}
-    if len(customer) < 1:
+    if not len(customer):
         raise HTTPException(
             status_code=400,
             detail="Должно быть изменено хоть одно из полей!!!")
@@ -81,6 +81,23 @@ def create_item(db: Session, item: schemas.ItemCreate):
     db.commit()
     db.refresh(db_item)
     return db_item
+
+
+# Редактирование товара
+def update_item(db: Session, item_id: int, item: schemas.ItemBase):
+    item = {key: value for key, value in item.dict().items()
+                if value != 'string' and value != 0}
+    print(item)
+    if not len(item):
+        raise HTTPException(
+            status_code=400,
+            detail="Должно быть изменено хоть одно из полей!!!")
+    db.query(item_model.Item).filter(
+        item_model.Item.id == item_id).update(
+        item, synchronize_session='fetch')
+    db.commit()
+    return db.query(item_model.Item).filter(
+        item_model.Item.id == item_id).first()
 
 
 # Заказы(дата)
