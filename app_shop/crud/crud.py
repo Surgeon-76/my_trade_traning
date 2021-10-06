@@ -86,7 +86,7 @@ def create_item(db: Session, item: schemas.ItemCreate):
 # Редактирование товара
 def update_item(db: Session, item_id: int, item: schemas.ItemBase):
     item = {key: value for key, value in item.dict().items()
-                if value != 'string' and value != 0}
+            if value != 'string' and value != 0}
     print(item)
     if not len(item):
         raise HTTPException(
