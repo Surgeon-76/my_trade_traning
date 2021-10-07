@@ -143,3 +143,22 @@ def create_order_items(db: Session, order_item: schemas.OrderItemCreate):
     db.commit()
     db.refresh(db_order_items)
     return db_order_items
+
+
+# Изменение связи(заказчика либо заказа)
+def update_order_items(db: Session,
+                       order_items_id: int,
+                       order_item: schemas.OrderItemBase):
+    order_item = {key: value for key, value in order_item.dict().items()
+                  if value != 0}
+    print(order_item)
+    if not len(order_item):
+        raise HTTPException(
+            status_code=400,
+            detail="Должно быть изменено хоть одно из полей!!!")
+    db.query(orderitem_model.OrderItem).filter(
+        orderitem_model.OrderItem.id == order_items_id).update(
+        order_item, synchronize_session='fetch')
+    db.commit()
+    return db.query(orderitem_model.OrderItem).filter(
+        orderitem_model.OrderItem.id == order_items_id).first()
