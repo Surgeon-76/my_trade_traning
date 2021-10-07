@@ -114,6 +114,21 @@ def create_orders(db: Session, order: schemas.OrderCreate, customer_id: int):
     return db_order
 
 
+# Редактирование заказа(изменение заказчика)
+def update_orders(db: Session, order: schemas.Order, order_id: int):
+    order = {key: value for key, value in order.dict().items()
+            if value != 'string' and value != 0 and key != 'date_placed' and key != 'line_items'}
+    if not len(order):
+        raise HTTPException(
+            status_code=400,
+            detail="Должно быть изменено хоть одно из полей!!!")
+    db.query(order_model.Order).filter(
+        order_model.Order.id == order_id).update(
+        order, synchronize_session='fetch')
+    db.commit()
+    return db.query(order_model.Order).filter(
+        order_model.Order.id == order_id).first()
+
 # Заказ - Товар(количество)
 # Выводим список связей Заказ - Товаров
 def get_order_items(db: Session, skip: int = 0, limit: int = 100):
