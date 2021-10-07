@@ -63,6 +63,14 @@ class Order(OrderBase):
         orm_mode = True
 
 
+class OrderUpdate(BaseModel):
+    id: int
+    customer_id: int
+
+    class Config:
+        orm_mode = True
+
+
 # Покупатели
 class CustomerBase(BaseModel):
     first_name: str

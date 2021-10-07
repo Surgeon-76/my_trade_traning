@@ -115,9 +115,9 @@ def create_orders(db: Session, order: schemas.OrderCreate, customer_id: int):
 
 
 # Редактирование заказа(изменение заказчика)
-def update_orders(db: Session, order: schemas.Order, order_id: int):
+def update_orders(db: Session, order: schemas.OrderUpdate, order_id: int):
     order = {key: value for key, value in order.dict().items()
-            if value != 'string' and value != 0 and key != 'date_placed' and key != 'line_items'}
+             if value != 0}
     if not len(order):
         raise HTTPException(
             status_code=400,
@@ -128,6 +128,7 @@ def update_orders(db: Session, order: schemas.Order, order_id: int):
     db.commit()
     return db.query(order_model.Order).filter(
         order_model.Order.id == order_id).first()
+
 
 # Заказ - Товар(количество)
 # Выводим список связей Заказ - Товаров

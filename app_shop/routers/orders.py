@@ -1,6 +1,10 @@
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException
+)
 from sqlalchemy.orm import Session
 
 from app_shop.dependcies.dependency import get_db
@@ -35,9 +39,9 @@ def read_orders(skip: int = 0, limit: int = 100,
 # Редактирование заказа(изменение заказчика)
 @order_route.put("/{order_id}",
                  summary=('Редактирование заказа(изменение заказчика'),
-                 response_model=schemas.Order)
+                 response_model=schemas.OrderUpdate)
 def edit_orders(order_id: int,
-               order: schemas.Order,
+               order: schemas.OrderUpdate,
                db: Session = Depends(get_db)):
     db_order = crud.update_orders(db=db, order_id=order_id, order=order)
     if db_order is None:
