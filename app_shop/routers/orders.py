@@ -41,8 +41,8 @@ def read_orders(skip: int = 0, limit: int = 100,
                  summary=('Редактирование заказа(изменение заказчика'),
                  response_model=schemas.OrderUpdate)
 def edit_orders(order_id: int,
-               order: schemas.OrderUpdate,
-               db: Session = Depends(get_db)):
+                order: schemas.OrderUpdate,
+                db: Session = Depends(get_db)):
     db_order = crud.update_orders(db=db, order_id=order_id, order=order)
     if db_order is None:
         raise HTTPException(
