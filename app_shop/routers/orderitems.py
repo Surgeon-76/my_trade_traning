@@ -38,7 +38,7 @@ def read_links(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 # Редактирование связи
 @links_route.put("/{order_items_id}",
                  summary=('Редактирование схемы заказа(изменение заказчика \
-                     либо товара'),
+                     либо товара)'),
                  response_model=schemas.OrderItemUpdate)
 def edit_order_items(order_items_id: int,
                      order_item: schemas.OrderItemUpdate,
