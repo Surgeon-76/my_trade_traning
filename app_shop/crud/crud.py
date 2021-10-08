@@ -148,7 +148,7 @@ def create_order_items(db: Session, order_item: schemas.OrderItemCreate):
 # Изменение связи(заказчика либо заказа)
 def update_order_items(db: Session,
                        order_items_id: int,
-                       order_item: schemas.OrderItemBase):
+                       order_item: schemas.OrderItemUpdate):
     order_item = {key: value for key, value in order_item.dict().items()
                   if value != 0}
     print(order_item)

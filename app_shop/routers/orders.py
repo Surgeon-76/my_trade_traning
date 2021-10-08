@@ -38,7 +38,7 @@ def read_orders(skip: int = 0, limit: int = 100,
 
 # Редактирование заказа(изменение заказчика)
 @order_route.put("/{order_id}",
-                 summary=('Редактирование заказа(изменение заказчика'),
+                 summary=('Редактирование заказа(изменение заказчика)'),
                  response_model=schemas.OrderUpdate)
 def edit_orders(order_id: int,
                 order: schemas.OrderUpdate,

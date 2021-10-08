@@ -45,6 +45,15 @@ class OrderItem(OrderItemBase):
         orm_mode = True
 
 
+class OrderItemUpdate(BaseModel):
+    order_id: int
+    item_id: int
+    quantity: int
+
+    class Config:
+        orm_mode = True
+
+
 # Заказы(дата)
 class OrderBase(BaseModel):
     date_placed: datetime
