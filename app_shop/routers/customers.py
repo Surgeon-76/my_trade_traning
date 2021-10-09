@@ -1,7 +1,11 @@
 from typing import List
 
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException
+)
 
 from app_shop.crud import crud
 from app_shop.schemas import schemas
@@ -41,7 +45,7 @@ def read_customers(skip: int = 0, limit: int = 100,
                      response_model=schemas.Customer)
 def read_customer(customer_id: int, db: Session = Depends(get_db)):
     db_customer = crud.get_customer(db, customer_id=customer_id)
-    if db_customer is None:
+    if not db_customer:
         raise HTTPException(status_code=404, detail="Такого покупателя нет!")
     return db_customer
 
@@ -54,8 +58,23 @@ def edit_customers(customer_id: int,
                    db: Session = Depends(get_db)):
     db_customer = crud.update_customer(
         db=db, customer_id=customer_id, customer=customer)
-    if db_customer is None:
+    if not db_customer:
         raise HTTPException(
             status_code=404,
             detail="Такого покупателя нет! Редактирование невозможно!")
+    return db_customer
+
+
+# Удаление покупателя
+@customers_route.delete("/{customer_id}",
+                        summary=('Удаление покупателя'))
+def del_customer(customer_id: int,
+                 db: Session = Depends(get_db)):
+    db_customer = crud.delete_customer(
+        db=db, customer_id=customer_id)
+    if not db_customer:
+        raise HTTPException(
+            status_code=404,
+            detail="Такого покупателя нет! Удаление невозможно!"
+        )
     return db_customer

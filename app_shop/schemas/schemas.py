@@ -1,15 +1,18 @@
 from datetime import datetime
-from typing import List
+from typing import (
+    List,
+    Optional
+)
 
 from pydantic import BaseModel, Field
 
 
 # Товар
 class ItemBase(BaseModel):
-    name: str
-    cost_price: float
-    selling_price: float
-    quantity: int
+    name: Optional[str] = None
+    cost_price: Optional[float] = None
+    selling_price: Optional[float] = None
+    quantity: Optional[int] = None
 
 
 class ItemCreate(ItemBase):
@@ -42,6 +45,15 @@ class OrderItem(OrderItemBase):
         orm_mode = True
 
 
+class OrderItemUpdate(BaseModel):
+    order_id: int
+    item_id: int
+    quantity: int
+
+    class Config:
+        orm_mode = True
+
+
 # Заказы(дата)
 class OrderBase(BaseModel):
     date_placed: datetime
@@ -55,6 +67,14 @@ class Order(OrderBase):
     id: int
     customer_id: int
     line_items: List[OrderItem] = []
+
+    class Config:
+        orm_mode = True
+
+
+class OrderUpdate(BaseModel):
+    id: int
+    customer_id: int
 
     class Config:
         orm_mode = True

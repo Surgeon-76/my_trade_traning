@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, Depends
+from fastapi.exceptions import HTTPException
 from sqlalchemy.orm import Session
 
 from app_shop.crud import crud
@@ -27,3 +28,29 @@ def create_items(item: schemas.ItemCreate, db: Session = Depends(get_db)):
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     items = crud.get_items(db, skip=skip, limit=limit)
     return items
+
+
+# Редактирование товара
+@items_route.put("/{item_id}", summary=('Редактирование товара'),
+                 response_model=schemas.Item)
+def edit_items(item_id: int,
+               item: schemas.ItemBase,
+               db: Session = Depends(get_db)):
+    db_item = crud.update_item(db=db, item_id=item_id, item=item)
+    if not db_item:
+        raise HTTPException(
+            status_code=404,
+            detail="Такого товара нет! Редактирование невозможно!")
+    return db_item
+
+
+# Удаление товара
+@items_route.delete("/{item_id}", summary=('Удаление товара'))
+def del_items(item_id: int, db: Session = Depends(get_db)):
+    db_item = crud.delete_items(db=db, item_id=item_id)
+    if not db_item:
+        raise HTTPException(
+            status_code=404,
+            detail="Такого товара нет! Удаление невозможно!"
+        )
+    return db_item
