@@ -63,6 +63,16 @@ def update_customer(db: Session,
         customer_model.Customer.id == customer_id).first()
 
 
+# Удаление покупателя
+def delete_customer(db: Session, customer_id: int):
+    db_customers = db.query(customer_model.Customer).filter(
+        customer_model.Customer.id == customer_id).one_or_none()
+    if db_customers:
+        db.delete(db_customers)
+        db.commit()
+    return db_customers
+
+
 # Товар
 # Выводим список товаров в заказе
 def get_items(db: Session, skip: int = 0, limit: int = 100):
@@ -99,6 +109,16 @@ def update_item(db: Session, item_id: int, item: schemas.ItemBase):
         item_model.Item.id == item_id).first()
 
 
+# Удаление товара
+def delete_items(db: Session, item_id: int):
+    db_items = db.query(item_model.Item).filter(
+        item_model.Item.id == item_id).one_or_none()
+    if db_items:
+        db.delete(db_items)
+        db.commit()
+    return db_items
+
+
 # Заказы(дата)
 # Выводим список заказов покупателя(-лей)
 def get_orders(db: Session, skip: int = 0, limit: int = 100):
@@ -128,6 +148,16 @@ def update_orders(db: Session, order: schemas.OrderUpdate, order_id: int):
     db.commit()
     return db.query(order_model.Order).filter(
         order_model.Order.id == order_id).first()
+
+
+# Удаление заказа
+def delete_orders(db: Session, order_id: int):
+    db_orders = db.query(order_model.Order).filter(
+        order_model.Order.id == order_id).one_or_none()
+    if db_orders:
+        db.delete(db_orders)
+        db.commit()
+    return db_orders
 
 
 # Заказ - Товар(количество)
@@ -165,11 +195,10 @@ def update_order_items(db: Session,
 
 
 # Удаление связи
-def del_order_items(db: Session, order_items_id: int):
+def delete_order_items(db: Session, order_items_id: int):
     db_order_items = db.query(orderitem_model.OrderItem).filter(
         orderitem_model.OrderItem.id == order_items_id).one_or_none()
-    if not db_order_items:
-        return None
-    db.delete(db_order_items)
-    db.commit()
+    if db_order_items:
+        db.delete(db_order_items)
+        db.commit()
     return db_order_items

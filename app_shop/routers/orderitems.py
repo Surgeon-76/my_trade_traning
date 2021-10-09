@@ -45,7 +45,7 @@ def edit_order_items(order_items_id: int,
                      db: Session = Depends(get_db)):
     db_order_item = crud.update_order_items(
         db=db, order_items_id=order_items_id, order_item=order_item)
-    if db_order_item is None:
+    if not db_order_item:
         raise HTTPException(
             status_code=404,
             detail="Такой схемы заказа нет! Изменение невозможно!")
@@ -57,10 +57,11 @@ def edit_order_items(order_items_id: int,
                     summary=('Удаление схемы заказа'))
 def del_order_items(order_items_id: int,
                     db: Session = Depends(get_db)):
-    db_order_item = crud.del_order_items(
+    db_order_item = crud.delete_order_items(
         db=db, order_items_id=order_items_id)
-    if db_order_item is None:
+    if not db_order_item:
         raise HTTPException(
             status_code=404,
-            detail="Такой схемы заказа нет! Удаление невозможно!")
+            detail="Такой схемы заказа нет! Удаление невозможно!"
+        )
     return db_order_item

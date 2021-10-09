@@ -44,8 +44,23 @@ def edit_orders(order_id: int,
                 order: schemas.OrderUpdate,
                 db: Session = Depends(get_db)):
     db_order = crud.update_orders(db=db, order_id=order_id, order=order)
-    if db_order is None:
+    if not db_order:
         raise HTTPException(
             status_code=404,
             detail="Такого заказа нет! Редактирование невозможно!")
+    return db_order
+
+
+# Удаление заказа
+@order_route.delete("/{order_id}",
+                    summary=('Удаление схемы заказа'))
+def del_order(order_id: int,
+              db: Session = Depends(get_db)):
+    db_order = crud.delete_orders(
+        db=db, order_id=order_id)
+    if not db_order:
+        raise HTTPException(
+            status_code=404,
+            detail="Такого заказа нет! Удаление невозможно!"
+        )
     return db_order

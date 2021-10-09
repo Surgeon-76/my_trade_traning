@@ -11,7 +11,10 @@ from app_shop.routers import (
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+app = FastAPI(
+    title="Супер-пупер МеГаШоП",
+    description="Первый блин всегда комом)))"
+)
 
 app.include_router(customers.customers_route)
 app.include_router(orders.order_route)
