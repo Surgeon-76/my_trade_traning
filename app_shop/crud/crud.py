@@ -162,3 +162,14 @@ def update_order_items(db: Session,
     db.commit()
     return db.query(orderitem_model.OrderItem).filter(
         orderitem_model.OrderItem.id == order_items_id).first()
+
+
+# Удаление связи
+def del_order_items(db: Session, order_items_id: int):
+    db_order_items = db.query(orderitem_model.OrderItem).filter(
+        orderitem_model.OrderItem.id == order_items_id).one_or_none()
+    if not db_order_items:
+        return None
+    db.delete(db_order_items)
+    db.commit()
+    return db_order_items

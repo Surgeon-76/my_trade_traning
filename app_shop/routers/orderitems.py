@@ -50,3 +50,17 @@ def edit_order_items(order_items_id: int,
             status_code=404,
             detail="Такой схемы заказа нет! Изменение невозможно!")
     return db_order_item
+
+
+# Удаление связи
+@links_route.delete("/{order_items_id}",
+                    summary=('Удаление схемы заказа'))
+def del_order_items(order_items_id: int,
+                    db: Session = Depends(get_db)):
+    db_order_item = crud.del_order_items(
+        db=db, order_items_id=order_items_id)
+    if db_order_item is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Такой схемы заказа нет! Удаление невозможно!")
+    return db_order_item
