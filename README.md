@@ -7,9 +7,7 @@
 Использует зависимости:
 
 asgiref==3.4.1
-
 asyncpg==0.24.0
-
 click==8.0.1
 DateTime==4.3
 fastapi==0.68.1
