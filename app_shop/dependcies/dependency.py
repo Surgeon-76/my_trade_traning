@@ -1,4 +1,4 @@
-from ..database.database import SessionLocal
+from app_shop.database.database import SessionLocal
 
 
 # Dependency
